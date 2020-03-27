@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% block title %}
+List of Orders
+{% endblock %}
+{% block container %}
+
+<table class="table">
+    <tr>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Employee Id</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Ordered date-time</th>
+                <th scope="col">Order fulfilled</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Additional Direction</th>
+                
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.user.empNum}}</td>
+                <td>{{order.menu_item.name}}</td>
+                <td>{{order.time_issued}}</td>
+                <td>
+                {% if order.is_fulfilled %}
+                <h6 style="color:green">yes</h6>
+                {% else %}
+                <h6 style="color:red">no</h6>
+                {% endif %}
+                </td>
+                <td>{{order.quantity}}</td>
+                <td>{{order.additional}}</td>
+                <td>
+                    <a href="{% url 'update-order' pk=order.id %}" style="padding:inherit"><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="{% url 'delete-order' pk=order.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+
+{% endblock %}

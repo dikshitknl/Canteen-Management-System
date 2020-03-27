@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block title %}
+List of people
+{% endblock %}
+{% block container %}
+<div>
+    <a class="nav-link" href="{% url 'create-person' %}"><i class="fa fa-user-plus"></i> Add Person</a>
+</div>
+<table class="table">
+    <tr>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Employee Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in persons %}
+            <tr>
+                <td>{{person.empNum}}</td>
+                <td>{{person.name}}</td>
+                <td>{{person.phone}}</td>
+                <td>{{person.get_gender_display}}</td>
+                <td>{{person.designation}}</td>
+                <td>
+                    <a href="{% url 'update-person' pk=person.id %}" style="padding:inherit"><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="{% url 'delete-person' pk=person.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+
+{% endblock %}

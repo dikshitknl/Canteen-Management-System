@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+{% block title %}
+List of Menu Item
+{% endblock %}
+{% block container %}
+<div>
+    <a class="nav-link" href="{% url 'create-menu' %}"><i class="fa fa-user-plus"></i> Add Menu Item</a>
+</div>
+<table class="table">
+    <tr>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">S.N.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Availability</th>
+                <th scope="col">Preperation Time</th>
+                <th scope="col">Item is</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for menu in menus %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{menu.name}}</td>
+                <td>{{menu.price}}</td>
+                <td>
+                {% if menu.is_available %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+                </td>
+                <td>{{menu.preparation_time}}</td>
+                <td>{{menu.get_options_display}}</td>
+                <td>
+                    <a href="{% url 'update-menu' pk=menu.id %}" style="padding:inherit"><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="{% url 'delete-menu' pk=menu.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{% if is_paginated %}
+    {% include "pagination.html" %}
+{% endif %}
+
+{% endblock %}

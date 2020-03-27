@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+{% block title%}Order Here{% endblock %}
+{% block container %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Add New Order</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" id="login-form" action="{% url 'create-order-post' %}">
+            <div class="form-row">
+				<label for="emp">Employee Id:</label> 
+				<input disabled type="number" name="dummy" required id="dummy" value="{{ user.empNum }}">
+				<input hidden type="number" name="empId" required id="empId" value="{{ user.empNum }}">
+			</div>
+			<div >
+				<label for="item">Choose Item:</label>
+				</div>
+					{% for menu in menus %}
+						<div class="form-row">
+						<input type="radio" id="{{ menu.id }}" name="menu" value="{{ menu.id }}"><br>
+  						<label for="male">{{ menu.name }} ({{ menu.get_options_display }}) Price: Rs. {{menu.price}}</label><br>					
+						</div>
+  					{% endfor %}
+			<div class="form-row">
+				<label for="qty">Quantity (max: 8 orders):</label> 
+				<input type="number" name="qty" required id="qty" min="1" max="8">
+			</div>
+			<div class="form-row">
+				<label for="additional">Additional Requirement:</label> 
+				<input type="textarea" name="additional" required id="additional">
+			</div>
+            <button type="submit" class="btn btn-success">Create</button>
+        </form>
+    </div>
+</div>
+<div class="card">
+	<div class="card-header">
+        <h5 class="card-title">Your Order for Today:</h5>
+    </div>
+	<table class="table">
+    <tr>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Ordered date-time</th>
+                <th scope="col">Order fulfilled</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Additional Direction</th>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.menu_item.name}}</td>
+                <td>{{order.time_issued}}</td>
+                <td>
+                {% if order.is_fulfilled %}
+                <h6 style="color:green">yes</h6>
+                {% else %}
+                <h6 style="color:red">no</h6>
+                {% endif %}
+                </td>
+                <td>{{order.quantity}}</td>
+                <td>{{order.additional}}</td>
+                <td>{{order.billAmount}}</td>
+                <td>
+                    <a href="{% url 'cancel-order' pk=order.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+			<tr>
+                <td></td>
+                <td>Total Amount</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{billSum}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+</table>
+</div>
+{% endblock %}
