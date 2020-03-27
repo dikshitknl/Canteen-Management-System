@@ -1,0 +1,15 @@
+# Python runtime files and libraries
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Ide generated configuration
+.idea/
+# test and staging
+media/
+static/
+db.sqlite3
+test
+.vscode/
+node_modules/
